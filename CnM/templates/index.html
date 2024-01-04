@@ -1,0 +1,36 @@
+{%extends "_base.html"%} {%block title%}Index{%endblock%} {%block content%}
+<head>
+  <style>
+    h1 {
+      text-align: center;
+      font-size: 4rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    .btn-container {
+      text-align: center;
+    }
+    button {
+      font-size: 1.5rem;
+      margin: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Missionary and Cannibals Problem</h1>
+  <div class="btn-container">
+    <button onclick="location.href='/dfs'">DFS Search</button>
+    <button onclick="location.href='/bfs'">BFS Search</button>
+    <input type="number" id="maxDepth" placeholder="Max Depth" />
+    <button onclick="searchSpace()">Space Tree</button>
+  </div>
+  <script>
+    function searchSpace() {
+      var maxDepth = document.getElementById("maxDepth").value;
+      if (maxDepth !== "") {
+        location.href = "/space?max_depth=" + maxDepth;
+      }
+    }
+  </script>
+</body>
+{%endblock%}

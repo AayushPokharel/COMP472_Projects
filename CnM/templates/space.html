@@ -1,0 +1,48 @@
+{%extends "_base.html"%} {%block title%}Index{%endblock%} {%block content%}
+<body>
+  <style>
+    .tree-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .tree {
+      width: 100%;
+      overflow: auto;
+    }
+    .btn-container {
+      text-align: center;
+    }
+    button {
+      font-size: 1.5rem;
+      margin: 1rem;
+    }
+  </style>
+  <h1>Space Tree</h1>
+  <div class="btn-container">
+    <button onclick="next()">Next</button>
+    <button onclick="prev()">Previous</button>
+  </div>
+  <div class="tree-container">
+    <div class="tree">
+      <img src="{{ url_for('static', filename=space + '.svg') }}" />
+    </div>
+  </div>
+  <script>
+    function next() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var maxDepth = urlParams.get("max_depth");
+      if (maxDepth !== "") {
+        location.href = "/space?max_depth=" + (Number(maxDepth) + 1);
+      }
+    }
+    function prev() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var maxDepth = urlParams.get("max_depth");
+      if (maxDepth !== "") {
+        location.href = "/space?max_depth=" + (Number(maxDepth) - 1);
+      }
+    }
+  </script>
+</body>
+{%endblock%}

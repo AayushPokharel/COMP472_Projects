@@ -1,0 +1,22 @@
+    class Solution():
+        def __init__(self):
+            # Initial state with 3 missionaries, 3 cannibals, and the boat on the right side
+            self.start_state = (3, 3, 1)
+
+            # Goal state with 0 missionaries, 0 cannibals, and the boat on the left side
+            self.goal_state = (0, 0, 0)
+
+            # Possible movement options for the boat, represented as tuples (m, c)
+            self.options = [(1, 0), (0, 1), (1, 1), (0, 2), (2, 0)]
+
+            # Possible sides of the river where the boat can be
+            self.boat_side = ["right", "left"]
+
+            # Graph representation for visualization (using pydot.Dot)
+            self.graph = pydot.Dot(graph_type='graph', bgcolor="#ffffff", fontcolor="black", fontsize="24")
+
+            # Dictionary to keep track of visited states
+            self.visited = {}
+
+            # Flag to indicate if the problem has been solved
+            self.solved = False

@@ -1,0 +1,32 @@
+{%extends "_base.html"%} {%block title%}Search Tree{%endblock%} {%block
+content%}
+<style>
+  h1 {
+    text-align: center;
+    font-size: 4rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .tree-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+
+  .tree {
+    width: 100%;
+    overflow: auto;
+  }
+</style>
+<body>
+  <h1>{{search_type|upper}} Search Tree</h1>
+  <div class="tree-container">
+    <div class="tree">
+      <img
+        src="{{ url_for('static', filename=search_type + '.svg') }}"
+        alt="SVG"
+      />
+    </div>
+  </div>
+</body>
+{%endblock%}

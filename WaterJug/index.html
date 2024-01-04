@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="icon" href="assets/5L_5.png" type="image/png" />
+    <title>Water Jug Problem</title>
+  </head>
+
+  <body class="bg-gray-200 flex flex-col items-center justify-center">
+    <div class="flex-1">
+      <h1 class="text-5xl text-black font-black my-8 mx-72">
+        Water Jug Problem
+      </h1>
+
+      <div class="flex items-center">
+        <div class="mr-8">
+          <h2 class="text-2xl ml-52 text-black">5L Jug</h2>
+          <img
+            id="Jug5"
+            src="assets/5L_0.png"
+            alt="5 Liter Jug"
+            class="w-500 h-500"
+          />
+          <div class="mt-4 flex flex-col items-center">
+            <button onclick="Throw('Jug5')" class="btn btn-error mb-2">
+              Throw
+            </button>
+            <button onclick="Transfer('Jug5')" class="btn btn-primary mb-2">
+              Transfer
+            </button>
+            <button onclick="Fill('Jug5')" class="btn btn-success">Fill</button>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl ml-52 text-black">3L Jug</h2>
+          <img
+            id="Jug3"
+            src="assets/3L_0.png"
+            alt="3 Liter Jug"
+            class="w-500 h-500"
+          />
+          <div class="mt-4 flex flex-col items-center">
+            <button onclick="Throw('Jug3')" class="btn btn-error mb-2">
+              Throw
+            </button>
+            <button onclick="Transfer('Jug3')" class="btn btn-primary mb-2">
+              Transfer
+            </button>
+            <button onclick="Fill('Jug3')" class="btn btn-success">Fill</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex mt-4">
+        <!-- <a href="{{ url_for('solution') }}" class="btn btn-primary mx-2"
+          >Solution Space</a
+        > -->
+        <button onclick="bfs()" class="btn btn-success mx-2">BFS Search</button>
+        <button onclick="dfs()" class="btn btn-warning mx-2">DFS Search</button>
+      </div>
+    </div>
+
+    <footer
+      class="w-screen bg-gray-200 p-2 flex justify-between items-center sticky bottom-0 mt-[6.3rem]"
+    >
+      <p class="text-gray-500 text-sm">
+        &copy; 2023 Aayush Pokharel. All rights reserved.
+      </p>
+      <p class="text-gray-500 text-sm">
+        This project is licensed under the
+        <a href="https://opensource.org/license/mit/" class="text-blue-500"
+          >MIT License</a
+        >.
+      </p>
+    </footer>
+  </body>
+
+  <script>
+    let Jug5 = 0;
+    let Jug3 = 0;
+
+    function Transfer(imageId) {
+      if (imageId === "Jug5") {
+        // Transfer water from Jug5 to Jug3
+        if (Jug5 + Jug3 <= 3) {
+          // If the sum of water in both jugs is less than 3, then transfer all the water from Jug5 to Jug3
+          Jug3 += Jug5;
+          Jug5 = 0;
+        } else {
+          // If the sum of water in both jugs is greater than 3, then transfer water from Jug5 to Jug3 until Jug3 is full  and Jug5 is empty
+          Jug5 -= 3 - Jug3;
+          Jug3 = 3;
+        }
+      } else if (imageId === "Jug3") {
+        // Transfer water from Jug3 to Jug5
+        if (Jug5 + Jug3 <= 5) {
+          // If the sum of water in both jugs is less than 5, then transfer all the water from Jug3 to Jug5
+          Jug5 += Jug3;
+          Jug3 = 0;
+        } else {
+          // If the sum of water in both jugs is greater than 5, then transfer water from Jug3 to Jug5 until Jug5 is full  and Jug3 is empty
+          Jug3 -= 5 - Jug5;
+          Jug5 = 5;
+        }
+      }
+      update();
+    }
+
+    function Throw(imageId) {
+      // Throw water from the respective jug
+      if (imageId === "Jug5") {
+        Jug5 = 0;
+      } else if (imageId === "Jug3") {
+        Jug3 = 0;
+      }
+      update();
+    }
+
+    function Fill(imageId) {
+      // Fill the respective jug
+      if (imageId === "Jug5") {
+        Jug5 = 5;
+      } else if (imageId === "Jug3") {
+        Jug3 = 3;
+      }
+      update();
+    }
+
+    function update() {
+      // Update the images based on jug values
+      document.getElementById("Jug5").src = `assets/5L_${Jug5}.png`;
+      document.getElementById("Jug3").src = `assets/3L_${Jug3}.png`;
+      console.log(`The water in 5L Jug is ${Jug5}`);
+      console.log(`The water in 3L Jug is ${Jug3}`);
+
+      // Check win condition
+      if (Jug5 === 4) {
+        showWinModal();
+      }
+    }
+
+    function showWinModal() {
+      Swal.fire({
+        title: "Congratulations!",
+        text: "You have successfully filled 5 Liter Jug to 4 liters. You win!",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    }
+  </script>
+</html>

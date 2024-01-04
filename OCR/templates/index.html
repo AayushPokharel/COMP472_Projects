@@ -1,0 +1,70 @@
+{%extends "_base.html"%} {%block title%}Input{%endblock%} {%block content%}
+<div
+  style="
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+  "
+>
+  <!-- Image Upload -->
+  <div style="width: 50%; text-align: center">
+    <h1 style="font-size: 2.5rem; margin-bottom: 10px">Medical OCR Project</h1>
+    <h2 style="font-size: 1.5rem; margin-bottom: 20px">Upload an Image</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="file"
+        accept="image/*"
+        id="uploadInput"
+        required
+      />
+      <br />
+      <br />
+      <script>
+        document
+          .getElementById("uploadInput")
+          .addEventListener("change", function (event) {
+            const fileInput = event.target;
+            const imagePreview = document.getElementById("imagePreview");
+            const uploadedImage = document.getElementById("uploadedImage");
+
+            if (fileInput.files && fileInput.files[0]) {
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                uploadedImage.src = e.target.result;
+                imagePreview.style.display = "block";
+              };
+
+              reader.readAsDataURL(fileInput.files[0]);
+            }
+          });
+      </script>
+      <br />
+      <br />
+      <button
+        type="submit"
+        style="
+          padding: 10px;
+          font-size: 1.2rem;
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+        "
+      >
+        Upload
+      </button>
+    </form>
+  </div>
+
+  <!-- Image Preview Section -->
+  <div id="imagePreview" style="display: none; width: 50%">
+    <img
+      id="uploadedImage"
+      style="max-width: 100%; max-height: 800px; border: 1px solid #ccc"
+    />
+  </div>
+</div>
+{% endblock %}

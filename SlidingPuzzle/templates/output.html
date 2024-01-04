@@ -1,0 +1,130 @@
+{% extends "_base.html" %} {% block title %}Output of Sliding Puzzle{% endblock
+%} {% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .grid {
+    display: inline-block;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: bisque;
+  }
+
+  .grid td {
+    border: 1px solid darkgrey;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .process .action {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .result-title {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .score {
+    font-size: 1.5em;
+    color: purple;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .solution {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+  }
+  h1 {
+    font-size: 4rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+  }
+</style>
+
+<div id="output" class="container">
+  <h1 class="title">Output of Sliding Puzzle</h1>
+
+  <!-- Display Initial State as 3x3 grid -->
+  <h2 class="subtitle">Initial State</h2>
+  <div class="content">
+    <table class="grid">
+      {% for row in result.initial_state %}
+      <tr>
+        {% for value in row %}
+        <td>{{ value | default(" ", true) }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- Display Solution Process -->
+  <h2 class="subtitle">Solution Process</h2>
+  {% for itr in range(result.actions|length) %}
+  <div class="process">
+    <!-- Display Result in 3x3 grid -->
+    <h3 class="result-title">Step {{ itr + 1 }}</h3>
+    <p class="action">Action: Moving {{ result.actions[itr] }}</p>
+    <div class="content">
+      <table class="grid">
+        {% for row in result.results[itr] %}
+        <tr>
+          {% for value in row %}
+          <!-- <td>{{ value }}</td> -->
+          <td>{{ value | default(" ", true) }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <p class="score">
+      Score: {{ result.scores[itr] }} using {{ heuristics|upper }} with {{
+      search_method|upper }} search Method.
+    </p>
+  </div>
+  {% endfor %}
+
+  <!-- Display Final Solution -->
+  <h2 class="subtitle">Solution</h2>
+  <div class="content">
+    <p class="solution">{{ result.solution }}</p>
+  </div>
+</div>
+{% endblock %}

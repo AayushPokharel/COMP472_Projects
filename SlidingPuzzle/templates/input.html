@@ -1,0 +1,299 @@
+{% extends "_base.html" %} {% block title %}Game{% endblock %} {% block content
+%}
+<style>
+  h1 {
+    text-align: center;
+    font-size: 4rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  form {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
+
+  table {
+    margin-top: 1rem;
+  }
+
+  select {
+    margin-top: 1rem;
+  }
+</style>
+<h1>Sliding Puzzle</h1>
+<div>
+  <form id="puzzleForm" method="post" onsubmit="return validateForm()">
+    <div>
+      <h2>Initial State</h2>
+      <table>
+        <tr>
+          <td>
+            <input
+              id="initial_1"
+              name="initial_1"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_2"
+              name="initial_2"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_3"
+              name="initial_3"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              id="initial_4"
+              name="initial_4"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_5"
+              name="initial_5"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_6"
+              name="initial_6"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              id="initial_7"
+              name="initial_7"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_8"
+              name="initial_8"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="initial_9"
+              name="initial_9"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h2>Goal State</h2>
+      <table>
+        <tr>
+          <td>
+            <input
+              id="goal_1"
+              name="goal_1"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_2"
+              name="goal_2"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_3"
+              name="goal_3"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              id="goal_4"
+              name="goal_4"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_5"
+              name="goal_5"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_6"
+              name="goal_6"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              id="goal_7"
+              name="goal_7"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_8"
+              name="goal_8"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+          <td>
+            <input
+              id="goal_9"
+              name="goal_9"
+              type="number"
+              min="0"
+              max="8"
+              required
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <label for="searchMethod">Search Method:</label>
+    <select id="searchMethod" name="search_method">
+      <option value="a_star" selected>A* Search</option>
+      <option value="bfs">Breadth-First Search</option>
+    </select>
+
+    <label for="heuristics">Heuristics:</label>
+    <select id="heuristics" name="heuristics">
+      <option value="manhattan" selected>Manhattan Distance</option>
+      <option value="misplaced_tiles">Misplaced Tiles</option>
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    var initialStateValues = new Set();
+    var goalStateValues = new Set();
+    var isValid = true;
+
+    // Validate uniqueness of values in the Initial State
+    var initialStateInputs = document.querySelectorAll(
+      "#puzzleForm div:nth-child(1) input"
+    );
+    initialStateInputs.forEach(function (input) {
+      if (!initialStateValues.has(input.value)) {
+        initialStateValues.add(input.value);
+      } else {
+        alert("Values in Initial State must be unique.");
+        // return false;
+        isValid = false;
+      }
+    });
+
+    // Validate uniqueness of values in the Goal State
+    var goalStateInputs = document.querySelectorAll(
+      "#puzzleForm div:nth-child(2) input"
+    );
+    goalStateInputs.forEach(function (input) {
+      if (!goalStateValues.has(input.value)) {
+        goalStateValues.add(input.value);
+      } else {
+        alert("Values in Goal State must be unique.");
+        // return false;
+        isValid = false;
+      }
+    });
+
+    // Check if Initial State and Goal State are different
+    if (
+      JSON.stringify(Array.from(initialStateValues)) ===
+      JSON.stringify(Array.from(goalStateValues))
+    ) {
+      alert("Initial State and Goal State must be different.");
+      //return false;
+      isValid = false;
+    }
+
+    // If all validations pass, the form will be submitted
+    // return true;
+    return isValid;
+  }
+
+  function submitForm() {
+    var form = document.getElementById("puzzleForm");
+    form.submit();
+  }
+</script>
+
+{% endblock %}
